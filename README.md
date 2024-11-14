@@ -71,7 +71,7 @@ On mettra des petits poissons en attendant qu'il y en ait beaucoup
  - [ ] Manière de calculer la force des courants en fonction des différences de températures
  - [ ] Epuisement que prend un poisson pour chaque évènements
  - [ ] L'efficacité de la reproduction du poisson en fonction de sa forme
- - [ ] La vitesse du poisson en fonction de sa forme et du courant > Avoir un seuil normal et un lien avec l'épuisement, ce seuil descend si le courant est dans le mauvais sens, contraire sinon
+ - [ ] La vitesse du poisson en fonction de sa forme et du courant > Avoir un seuil normal et un lien avec l'épuisement, ce seuil descend si le courant est dans le mauvais sens et augmente dans le cas contraire par ex
  - [ ] types de blocs disponibles, notations dans le tableau de map
  - [ ] ...
 
