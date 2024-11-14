@@ -63,6 +63,17 @@ On mettra des petits poissons en attendant qu'il y en ait beaucoup
 
 ## A faire
  - [ ] Liste des choses à faire
+ - [ ] Déterminer les règles
+ - [ ] temp min et temp max de l'eau
+ - [ ] pH min et pH max de l'eau
+ - [ ] pression min et pression max de l'eau
+ - [ ] Les règles entre les attributs
+ - [ ] Manière de calculer la force des courants en fonction des différences de températures
+ - [ ] Epuisement que prend un poisson pour chaque évènements
+ - [ ] L'efficacité de la reproduction du poisson en fonction de sa forme
+ - [ ] La vitesse du poisson en fonction de sa forme et du courant > Avoir un seuil normal et un lien avec l'épuisement, ce seuil descend si le courant est dans le mauvais sens, contraire sinon
+ - [ ] types de blocs disponibles, notations dans le tableau de map
+ - [ ] ...
 
 
 ## Technique
