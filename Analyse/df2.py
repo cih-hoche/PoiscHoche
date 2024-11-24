@@ -1,71 +1,60 @@
-
+"""
+Analyse des données 2
+"""
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
-from scipy.stats import stats
-from scipy.stats import probplot
-# Lire le fichier CSV
+
+# Lire le fichier CSV → On obtient un DataFrame (= Machin qui ressemble à tableau excel)
 df = pd.read_csv("datas/Ucrit_data_Iberian_Peninsula.csv", sep=';')
 
-# Vire tous ceux dont le Life stage est égal à Junevile
+# On vire tous les individus qui ne sont pas adultes
 df = df[df['Life stage'] != 'Juvenile']
 
+# On garde seulement les colonnes qui contiennent des valeurs intéressantes (en nombre).
 df = df[['Species',"Total length (mm)", "Ucrit (cm/s)", "Temperature (oC)"]]
-print(df.columns)
+
+# Pour enlever les lignes dans lesquelles il y a des valeurs manquantes
 df = df.dropna()
 
-# Fais la moyenne des valeurs par especes
+# Fais la moyenne des valeurs par espèce
 df = df.groupby(['Species']).mean()
-# Index(['Species', 'Native', 'Family', 'Total length (mm)', 'Ucrit (cm/s)',
-#        'Temperature (oC)', 'Body shape', 'Form factor', 'Life stage',
-#        'Time step (min)', 'Wild status'],
-#       dtype='object')
+
+# Afficher le df
 print(df)
-import seaborn as sns
 
-# Afficher le graphique des probabilités de Temperature (oC)
-# df.replace([np.inf, -np.inf], np.nan, inplace=True)
-# sns.histplot(df[['Temperature (oC)']], kde=True)
-# print(df['Temperature (oC)'])
-
-
+# Afficher les statistiques sur la température
 print(df['Temperature (oC)'].describe())
-# plt.title('Probability Plot')
-# plt.xlabel('Theoretical Quantiles')
-# plt.ylabel('Ordered Values')
-# plt.show()
-#
-# # AFFicher le nuage de point et tracer la droite moyenne
-# plt.scatter(df['Total length (mm)'], df['Ucrit (cm/s)'], c=df['Temperature (oC)'], cmap='viridis')
-# plt.colorbar(label='Temperature (oC)')
-# plt.xlabel('Total length (mm)')
-# plt.ylabel('Ucrit (cm/s)')
-# plt.title('Scatter plot of Total length vs Ucrit')
-#
-# x = df['Total length (mm)']
-# y = df['Ucrit (cm/s)']
-#
-# # Faire la moyenne de tous des coordonnées
-# x_mean = x.mean()
-# y_mean = y.mean()
-# # # Tracer la droite qui passe par ce point et par l'origine du repere
-# plt.scatter(x_mean, y_mean, color='orange', label='Line through mean and origin')
-# # calculer le coef directeur de la droitre
-# slope = y_mean / x_mean
-# print(slope)
-#
-# plt.plot(x, slope*x, color='red', label='Line through mean and origin')
-#
-#
-# # plot point
-# # plt.plot(x_mean, y_mean, color='red', label='Mean')
-#
-# # print(x, y)
-# # np array from x and y
-#
-# # Tracer la droite de régression
-# # plt.plot(x, trendline, color='orange', label='Linear Regression')
-#
-# plt.legend()
-# #
-# plt.show()
+
+
+x = df['Total length (mm)']
+y = df['Ucrit (cm/s)']
+
+# Afficher le nuage de points
+plt.scatter(x, y, c=df['Temperature (oC)'], cmap='viridis')
+
+# Légendes du graphique
+# Echelle de couleurs
+plt.colorbar(label='Temperature (oC)')
+plt.xlabel('Total length (mm)')
+plt.ylabel('Ucrit (cm/s)')
+plt.title('Scatter plot of Total length vs Ucrit')
+
+# Faire la moyenne de tous des coordonnées
+x_mean = x.mean()
+y_mean = y.mean()
+
+
+# Tracer la droite qui passe par le point moyen et par l'origine du repère
+# Calculer le Coefficient directeur de la droite
+slope = y_mean / x_mean
+print(slope)
+
+#  Afficher la droite
+plt.plot(x, slope*x, color='red', label='Line through mean and origin')
+
+# Afficher le point moyen (orange)
+plt.scatter(x_mean, y_mean, color='orange', label='Point moyen')
+
+# Afficher le graphique
+plt.legend()
+plt.show()
