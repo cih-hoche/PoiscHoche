@@ -1,6 +1,6 @@
 # PoiscHoche
 
-Projet de simulations de poissons du CIH
+Projet de simulations de poissons du CIH *(en GO parce que c'est plus rapide)*
 
 ## Principe
 Chacun peut créer une espèce de poissons qui vont évoluer dans une simulation.
@@ -24,7 +24,7 @@ Attributs:
 - Taille
 - Carnivore / Herbivore
 - Estomac (combien il doit manger)
-- Vue (capacité à détecter les poissons alentours)
+- Détection trucs alentours
 - Température idéale de vie
 - Acidité de l'eau supportée
 - Vitesse/Force de la nage (> Epuisement en fonction de la vitesse (à voir avec les courants)) 
@@ -69,7 +69,7 @@ On mettra des petits poissons en attendant qu'il y en ait beaucoup
  - [ ] pression min et pression max de l'eau
  - [ ] Les règles entre les attributs
  - [ ] Manière de calculer la force des courants en fonction des différences de températures
- - [ ] Epuisement que prend un poisson pour chaque évènements
+ - [ ] Epuisement que prend un poisson pour chaque évènement
  - [ ] L'efficacité de la reproduction du poisson en fonction de sa forme
  - [ ] La vitesse du poisson en fonction de sa forme et du courant > Avoir un seuil normal et un lien avec l'épuisement, ce seuil descend si le courant est dans le mauvais sens et augmente dans le cas contraire par ex
  - [ ] types de blocs disponibles, notations dans le tableau de map
@@ -89,3 +89,38 @@ On mettra des petits poissons en attendant qu'il y en ait beaucoup
 - Coordonnées
 - Vie
 - Niveau de faim
+
+## Notes
+Coeff directeur de la droite pour prédire la vitesse du poisson en fonction de sa longueur
+
+`0.33790468303919324`
+`Ucrit = 0.33790468303919324 * longueur`
+Ucrit en cm/s
+Longueur en mm
+
+
+```
+
+count    33.000000
+mean     17.025786
+std       3.743672
+min       7.475000
+25%      15.000000
+50%      17.000000
+75%      20.000000
+max      25.000000
+```
+
+Plus c'est long plus, il détecte les poissons de plus loin
+
+Agilité → Gros poisson → Fonction de rafraichissement moins souvent
+
+Reproduction → Plus petits poissons → Plus de poissons
+
+Estomac → Plus gros poissons → Plus de nourriture
+
+Petits poissons → Moins de vie
+
+1 jauge de vie + 1 jauge d'énergie + 1 jauge de faim
+
+Mort aléatoire (petite probabilité (un peu plus important pour les tout petits poissons))
