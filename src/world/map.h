@@ -1,7 +1,3 @@
-//
-// Created by algov on 12/15/24.
-//
-
 #ifndef POISCHOCHE_MAP_H
 #define POISCHOCHE_MAP_H
 #include "block.h"

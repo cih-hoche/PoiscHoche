@@ -1,7 +1,3 @@
-//
-// Created by algov on 12/15/24.
-//
-
 #include "map.h"
 #include "block.h"
 #include <random>

@@ -1,7 +1,3 @@
-//
-// Created by algov on 12/15/24.
-//
-
 #ifndef POISCHOCHE_GUI_H
 #define POISCHOCHE_GUI_H
 #include <SDL2/SDL.h>

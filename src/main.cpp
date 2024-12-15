@@ -1,4 +1,3 @@
-#include "iostream"
 #include "display/gui.h"
 #include "world/map.h"
 
