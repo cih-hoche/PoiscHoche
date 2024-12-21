@@ -5,13 +5,16 @@
 
 namespace world {
     class Block {
+    private:
+        SDL_Surface * surface;
     public:
         std::string name;
         bool collision;
-        SDL_Texture * texture;
+        SDL_Texture * texture{nullptr};
         uint8_t id;
 
-        explicit Block(std::string _name, SDL_Texture * _texture, uint8_t _id,bool _collision = true);
+        explicit Block(std::string _name, const char * path, uint8_t _id, bool _collision=true);
+        ~Block();
     };
 
     extern Block * blocks[256];
