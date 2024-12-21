@@ -2,8 +2,8 @@
 #include "world/map.h"
 
 int main(int argc, char ** argv){
-    world::map::init();
     display::init_gui();
+    world::map::init();
     display::loop();
     display::destroy_gui();
     world::map::destroy();
