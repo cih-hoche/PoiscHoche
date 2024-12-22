@@ -1,6 +1,7 @@
 #include "gui.h"
 #include "offset.h"
 #include "../world/map.h"
+#include "../entities/fish.h"
 
 #define MIN(a,b) (a<=b?a:b)
 
@@ -91,6 +92,7 @@ namespace display {
                         break;
                 }
             }
+            entities::fishes[0].tick();
             render_map();
             render_entities();
             SDL_RenderPresent(renderer);
@@ -111,6 +113,9 @@ namespace display {
     }
 
     void render_entities() {
+        SDL_SetRenderDrawColor(renderer, 127, 0, 255,255);
+        SDL_Rect rMyfish{ (int) entities::fishes[0].x - (int) offset.x,  (int) entities::fishes[0].y - (int) offset.y, 64, 32};
+        SDL_RenderFillRect(renderer, &rMyfish);
         /* TODO */
     }
 
