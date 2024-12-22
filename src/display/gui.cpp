@@ -42,9 +42,9 @@ namespace display {
                                             BLOCK_HW);
         SDL_SetRenderTarget(renderer, no_texture16x16);
         SDL_SetRenderDrawColor(renderer, 127, 0, 255, 255);
-        SDL_Rect _rect = {0, 0, 8, 8};
+        SDL_Rect _rect = {0, 0, BLOCK_HW/2, BLOCK_HW/2};
         SDL_RenderFillRect(renderer, &_rect);
-        _rect = {8, 8, 8, 8};
+        _rect = {BLOCK_HW/2, BLOCK_HW/2, BLOCK_HW/2, BLOCK_HW/2};
         SDL_RenderFillRect(renderer, &_rect);
         SDL_SetRenderTarget(renderer, nullptr);
     }
