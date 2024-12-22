@@ -14,23 +14,25 @@ namespace world {
         if (surface == nullptr) {
             printf("world::Block::Block(): chargement de '%s' impossible\n---> %s\n", path, IMG_GetError());
         } else {
-            // texture = SDL_CreateTextureFromSurface(display::renderer, surface);
+            #ifdef PERF_BUILD
+                texture = SDL_CreateTexture(display::renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_TARGET, BLOCK_HW,
+                                            BLOCK_HW);
+                SDL_SetRenderTarget(display::renderer, texture);
+                if (id == 1) {
+                    SDL_SetRenderDrawColor(display::renderer, 0, 0, 0, 255);
+                } else {
+                    SDL_SetRenderDrawColor(display::renderer, 255, 255, 255, 255);
+                }
 
-            texture = SDL_CreateTexture(display::renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_TARGET, BLOCK_HW,
-                                        BLOCK_HW);
-            SDL_SetRenderTarget(display::renderer, texture);
-            if (id == 1) {
-                SDL_SetRenderDrawColor(display::renderer, 0, 0, 0, 255);
-            } else {
-                SDL_SetRenderDrawColor(display::renderer, 255, 255, 255, 255);
-            }
+                SDL_Rect _rect = {0, 0, BLOCK_HW/2, BLOCK_HW/2};
+                SDL_RenderFillRect(display::renderer, &_rect);
+                _rect = {BLOCK_HW/2, BLOCK_HW/2, BLOCK_HW/2, BLOCK_HW/2};
+                SDL_RenderFillRect(display::renderer, &_rect);
 
-            SDL_Rect _rect = {0, 0, 2, 2};
-            SDL_RenderFillRect(display::renderer, &_rect);
-            _rect = {2, 2, 2, 2};
-            SDL_RenderFillRect(display::renderer, &_rect);
-
-            SDL_SetRenderTarget(display::renderer, nullptr);
+                SDL_SetRenderTarget(display::renderer, nullptr);
+            #else
+                texture = SDL_CreateTextureFromSurface(display::renderer, surface);
+            #endif
 
             printf("world::Block::Block(): '%s' a été chargé\n", path);
         }
@@ -43,12 +45,8 @@ namespace world {
 
     void init_blocks() {
         IMG_Init(0);
-        // TODO Ne surtout pas garde comme ça
-        blocks[0] = new Block("Eau", "../assets/water_0.png", 0, false);
-        blocks[1] = new Block("Eau", "../assets/water_0.png", 0, false);
-        blocks[2] = new Block("Eau", "../assets/water_0.png", 0, false);
-        blocks[3] = new Block("Eau", "../assets/water_0.png", 0, false);
-        blocks[4] = new Block("Pierre", "../assets/stone_0.png", 1);
+        blocks[0] = new Block("Eau", "./assets/water_0.png", 0, false);
+        blocks[1] = new Block("Pierre", "./assets/stone_0.png", 1);
     }
 
     void destroy_blocks() {
