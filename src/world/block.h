@@ -1,7 +1,7 @@
 #ifndef POISCHOCHE_BLOCK_HW
 #define POISCHOCHE_BLOCK_HW
 
-#define BLOCK_HW 4
+#define BLOCK_HW 16
 
 #include <string>
 #include <SDL2/SDL.h>
