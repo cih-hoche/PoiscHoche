@@ -1,5 +1,6 @@
 #ifndef POISCHOCHE_MAP_H
 #define POISCHOCHE_MAP_H
+
 #include "block.h"
 
 namespace world::map {

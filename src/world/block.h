@@ -1,5 +1,8 @@
-#ifndef POISCHOCHE_BLOCK_H
-#define POISCHOCHE_BLOCK_H
+#ifndef POISCHOCHE_BLOCK_HW
+#define POISCHOCHE_BLOCK_HW
+
+#define BLOCK_HW 4
+
 #include <string>
 #include <SDL2/SDL.h>
 
@@ -24,4 +27,4 @@ namespace world {
 }
 
 
-#endif //POISCHOCHE_BLOCK_H
+#endif //POISCHOCHE_BLOCK_HW
