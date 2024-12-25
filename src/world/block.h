@@ -3,6 +3,8 @@
 
 #define BLOCK_HW 16
 
+// #define PERF_BUILD true
+
 #include <string>
 #include <SDL2/SDL.h>
 

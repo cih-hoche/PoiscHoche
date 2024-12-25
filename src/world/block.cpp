@@ -9,33 +9,34 @@ namespace world {
 
     Block::Block(std::string _name, const char *path, uint8_t _id, bool _collision): name(std::move(_name)),
         collision(_collision), id(_id) {
-        surface = IMG_Load(path);
+        
+        #ifdef PERF_BUILD
+            texture = SDL_CreateTexture(display::renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_TARGET, BLOCK_HW,
+                                        BLOCK_HW);
+            SDL_SetRenderTarget(display::renderer, texture);
+            if (id == 1) {
+                SDL_SetRenderDrawColor(display::renderer, 0, 0, 0, 255);
+            } else {
+                SDL_SetRenderDrawColor(display::renderer, 255, 255, 255, 255);
+            }
 
-        if (surface == nullptr) {
-            printf("world::Block::Block(): chargement de '%s' impossible\n---> %s\n", path, IMG_GetError());
-        } else {
-            #ifdef PERF_BUILD
-                texture = SDL_CreateTexture(display::renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_TARGET, BLOCK_HW,
-                                            BLOCK_HW);
-                SDL_SetRenderTarget(display::renderer, texture);
-                if (id == 1) {
-                    SDL_SetRenderDrawColor(display::renderer, 0, 0, 0, 255);
-                } else {
-                    SDL_SetRenderDrawColor(display::renderer, 255, 255, 255, 255);
-                }
+            SDL_Rect _rect = {0, 0, BLOCK_HW, BLOCK_HW};
+            SDL_RenderFillRect(display::renderer, &_rect);
+            _rect = {BLOCK_HW, BLOCK_HW, BLOCK_HW, BLOCK_HW};
+            SDL_RenderFillRect(display::renderer, &_rect);
 
-                SDL_Rect _rect = {0, 0, BLOCK_HW/2, BLOCK_HW/2};
-                SDL_RenderFillRect(display::renderer, &_rect);
-                _rect = {BLOCK_HW/2, BLOCK_HW/2, BLOCK_HW/2, BLOCK_HW/2};
-                SDL_RenderFillRect(display::renderer, &_rect);
+            SDL_SetRenderTarget(display::renderer, nullptr);
+        #else
+            surface = IMG_Load(path);
 
-                SDL_SetRenderTarget(display::renderer, nullptr);
-            #else
-                texture = SDL_CreateTextureFromSurface(display::renderer, surface);
-            #endif
+            if (surface == nullptr) {
+                printf("world::Block::Block(): chargement de '%s' impossible\n---> %s\n", path, IMG_GetError());
+            } else {
+                    texture = SDL_CreateTextureFromSurface(display::renderer, surface);
+                printf("world::Block::Block(): '%s' a été chargé\n", path);
+            }
+        #endif
 
-            printf("world::Block::Block(): '%s' a été chargé\n", path);
-        }
     }
 
     Block::~Block() {
