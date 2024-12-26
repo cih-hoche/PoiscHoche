@@ -113,9 +113,7 @@ namespace display {
     }
 
     void render_entities() {
-        SDL_SetRenderDrawColor(renderer, 127, 0, 255,255);
-        SDL_Rect rMyfish{ (int) entities::fishes[0].x - (int) offset.x,  (int) entities::fishes[0].y - (int) offset.y, 64, 32};
-        SDL_RenderFillRect(renderer, &rMyfish);
+        entities::fishes[0].draw(renderer, offset.x, offset.y);
         /* TODO */
     }
 

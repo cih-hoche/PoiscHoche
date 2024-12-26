@@ -32,7 +32,7 @@ namespace world {
             if (surface == nullptr) {
                 printf("world::Block::Block(): chargement de '%s' impossible\n---> %s\n", path, IMG_GetError());
             } else {
-                    texture = SDL_CreateTextureFromSurface(display::renderer, surface);
+                texture = SDL_CreateTextureFromSurface(display::renderer, surface);
                 printf("world::Block::Block(): '%s' a été chargé\n", path);
             }
         #endif
