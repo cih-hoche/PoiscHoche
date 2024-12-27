@@ -43,10 +43,9 @@ namespace entities
 
     void Fish::draw(SDL_Renderer *renderer, int offset_x, int offset_y)
     {
-        SDL_Rect rMyfish{(int)x - offset_x, (int)y - offset_y, 64, 32};
+        SDL_Rect rFish{(int)x - offset_x, (int)y - offset_y, width * BLOCK_HW, height * BLOCK_HW};
         SDL_SetRenderDrawColor(renderer, 127, 0, 255, 255);
-        // SDL_RenderFillRect(renderer, &rMyfish);
-        SDL_RenderCopyEx(renderer, texture, nullptr, &rMyfish, direction * (180/M_PI), nullptr, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(renderer, texture, nullptr, &rFish, direction * (180/M_PI), nullptr, SDL_FLIP_NONE);
     }
 
 }
