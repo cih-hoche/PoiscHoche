@@ -1,6 +1,7 @@
 #include "fish.h"
 #include <cmath>
 #include "../world/block.h"
+#include "../display/gui.h"
 #include <SDL2/SDL_image.h>
 #define MIN(a, b) (a <= b ? a : b)
 #define MAX(a, b) (a <= b ? b : a)
@@ -8,6 +9,19 @@
 namespace entities
 {
     std::vector<Fish> fishes;
+    Fish::Fish(float _x, float _y, float _speed, float _direction, uint8_t _width, uint8_t _height) : x(_x), y(_y), speed(_speed), direction(_direction), width(_width), height(_height)
+    {
+        const char *path = "./assets/fish.png";
+        surface = IMG_Load(path);
+
+            if (surface == nullptr) {
+                printf("world::Block::Block(): chargement de '%s' impossible\n---> %s\n", path, IMG_GetError());
+                texture = display::no_texture16x16;
+            } else {
+                texture = SDL_CreateTextureFromSurface(display::renderer, surface);
+                printf("world::Block::Block(): '%s' a été chargé\n", path);
+            }
+    }
 
     void Fish::tick()
     {
@@ -23,19 +37,16 @@ namespace entities
         for (unsigned int _y = y_blocks; _y <= y_blocks_end; _y++)
             for (unsigned int _x = x_blocks; _x <= x_blocks_end; _x++)
             {
-                /* TO FINISH */
+                /* TODO TO FINISH */
             }
     }
 
     void Fish::draw(SDL_Renderer *renderer, int offset_x, int offset_y)
     {
-
-        SDL_SetRenderDrawColor(renderer, 127, 0, 255, 255);
         SDL_Rect rMyfish{(int)x - offset_x, (int)y - offset_y, 64, 32};
-        SDL_RenderFillRect(renderer, &rMyfish);
+        SDL_SetRenderDrawColor(renderer, 127, 0, 255, 255);
+        // SDL_RenderFillRect(renderer, &rMyfish);
+        SDL_RenderCopyEx(renderer, texture, nullptr, &rMyfish, direction * (180/M_PI), nullptr, SDL_FLIP_NONE);
     }
 
-    Fish::Fish(float _x, float _y, float _speed, float _direction, uint8_t _width, uint8_t _height) : x(_x), y(_y), speed(_speed), direction(_direction), width(_width), height(_height)
-    {
-    }
 }

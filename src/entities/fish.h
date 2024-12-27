@@ -11,6 +11,10 @@ namespace entities
 {
     class Fish
     {
+    private:
+        SDL_Surface *surface;
+        SDL_Texture *texture{nullptr};
+
     public:
         float x, y;
         uint8_t width, height;
