@@ -14,17 +14,21 @@ namespace entities
         const char *path = "./assets/fish.png";
         surface = IMG_Load(path);
 
-            if (surface == nullptr) {
-                printf("world::Block::Block(): chargement de '%s' impossible\n---> %s\n", path, IMG_GetError());
-                texture = display::no_texture16x16;
-            } else {
-                texture = SDL_CreateTextureFromSurface(display::renderer, surface);
-                printf("world::Block::Block(): '%s' a été chargé\n", path);
-            }
+        if (surface == nullptr)
+        {
+            printf("world::Block::Block(): chargement de '%s' impossible\n---> %s\n", path, IMG_GetError());
+            texture = display::no_texture16x16;
+        }
+        else
+        {
+            texture = SDL_CreateTextureFromSurface(display::renderer, surface);
+            printf("world::Block::Block(): '%s' a été chargé\n", path);
+        }
     }
 
     void Fish::tick()
     {
+        direction += 0.001;
         x += speed * (float)cos(direction);
         y += speed * (float)sin(direction);
 
@@ -42,10 +46,24 @@ namespace entities
     }
 
     void Fish::draw(SDL_Renderer *renderer, int offset_x, int offset_y)
-    {
-        SDL_Rect rFish{(int)x - offset_x, (int)y - offset_y, width * BLOCK_HW, height * BLOCK_HW};
+    {   
+        int rwidth = width * BLOCK_HW;
+        int rheight = height * BLOCK_HW;
+        SDL_Rect rFish{(int)x - rwidth - offset_x, (int)y - (rheight / 2) - offset_y, rwidth, rheight};
         SDL_SetRenderDrawColor(renderer, 127, 0, 255, 255);
-        SDL_RenderCopyEx(renderer, texture, nullptr, &rFish, direction * (180/M_PI), nullptr, SDL_FLIP_NONE);
+        SDL_RenderFillRect(renderer, &rFish);
+
+        SDL_Point rotationPoint{(int) width * BLOCK_HW, (int) height * BLOCK_HW / 2};
+        SDL_RenderCopyEx(renderer, texture, nullptr, &rFish, direction * (180 / M_PI), &rotationPoint, SDL_FLIP_NONE);
+
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+        int posRectS = 16;
+
+        SDL_Rect positionPointRect = {((int)x - offset_x) - posRectS / 2, ((int)y - offset_y) - posRectS / 2, posRectS, posRectS};
+        SDL_RenderFillRect(renderer, &positionPointRect);
+
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+        SDL_RenderDrawPointF(renderer, (int)x - offset_x, (int)y - offset_y);
     }
 
 }
