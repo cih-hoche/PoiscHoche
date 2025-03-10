@@ -22,6 +22,7 @@ namespace display{
     void render_map();
     void render_entities();
     void load_textures();
+    void render_point(SDL_Renderer *renderer, int x, int offset_x, int y, int offset_y);
 }
 
 

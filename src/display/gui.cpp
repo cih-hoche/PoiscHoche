@@ -43,9 +43,9 @@ namespace display {
                                             BLOCK_HW);
         SDL_SetRenderTarget(renderer, no_texture16x16);
         SDL_SetRenderDrawColor(renderer, 127, 0, 255, 255);
-        SDL_Rect _rect = {0, 0, BLOCK_HW/2, BLOCK_HW/2};
+        SDL_Rect _rect = {0, 0, BLOCK_HW / 2, BLOCK_HW / 2};
         SDL_RenderFillRect(renderer, &_rect);
-        _rect = {BLOCK_HW/2, BLOCK_HW/2, BLOCK_HW/2, BLOCK_HW/2};
+        _rect = {BLOCK_HW / 2, BLOCK_HW / 2, BLOCK_HW / 2, BLOCK_HW / 2};
         SDL_RenderFillRect(renderer, &_rect);
         SDL_SetRenderTarget(renderer, nullptr);
     }
@@ -62,62 +62,91 @@ namespace display {
 
         while (should_run) {
             while (SDL_PollEvent(&event)) {
-                switch (event.type) {
-                    case SDL_QUIT:
-                        should_run = false;
-                        break;
-                    case SDL_MOUSEBUTTONDOWN:
-                        mouse_offset = {event.button.x, event.button.y};
-                        old_offset.x = offset.x;
-                        old_offset.y = offset.y;
-                        mousedown = true;
-                        break;
-                    case SDL_MOUSEMOTION:
-                        if (mousedown) {
-                            if (old_offset.x - event.motion.x + mouse_offset.x >= 0 &&
-                                old_offset.x - event.motion.x + mouse_offset.x < world::map::width * BLOCK_HW - window_size.x)
-                                offset.setx(old_offset.x - event.motion.x + mouse_offset.x);
-                            if (old_offset.y - event.motion.y + mouse_offset.y >= 0 &&
-                                old_offset.y - event.motion.y + mouse_offset.y < world::map::height * BLOCK_HW - window_size.y)
-                                offset.sety(old_offset.y - event.motion.y + mouse_offset.y);
-                        }
-                        break;
-                    case SDL_MOUSEBUTTONUP:
-                        mousedown = false;
-                        break;
-                    case SDL_WINDOWEVENT:
-                        if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                            window_size.set(event.window.data1, event.window.data2);
-                        }
-                        break;
+                if (event.type == SDL_KEYUP) {
+                    switch (event.key.keysym.sym) {
+                        case SDLK_RIGHT:
+                            entities::fishes[0].direction += 0.2;
+                            break;
+                        case SDLK_LEFT:
+                            entities::fishes[0].direction -= 0.2;
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
-            entities::fishes[0].tick();
-            render_map();
-            render_entities();
-            SDL_RenderPresent(renderer);
-        }
-    }
 
-    void render_map() {
-        SDL_Rect block_rect{0, 0,BLOCK_HW,BLOCK_HW};
-        SDL_Texture *_texture;
+            switch (event.type) {
+                case SDL_QUIT:
+                    should_run = false;
+                    break;
+                case SDL_MOUSEBUTTONDOWN:
+                    mouse_offset = {event.button.x, event.button.y};
+                    old_offset.x = offset.x;
+                    old_offset.y = offset.y;
+                    mousedown = true;
+                    break;
+                case SDL_MOUSEMOTION:
+                    if (mousedown) {
+                        if (old_offset.x - event.motion.x + mouse_offset.x >= 0 &&
+                            old_offset.x - event.motion.x + mouse_offset.x < world::map::width * BLOCK_HW - window_size.
+                            x)
+                            offset.setx(old_offset.x - event.motion.x + mouse_offset.x);
+                        if (old_offset.y - event.motion.y + mouse_offset.y >= 0 &&
+                            old_offset.y - event.motion.y + mouse_offset.y < world::map::height * BLOCK_HW - window_size
+                            .y)
+                            offset.sety(old_offset.y - event.motion.y + mouse_offset.y);
+                    }
+                    break;
+                case SDL_MOUSEBUTTONUP:
+                    mousedown = false;
+                    break;
 
-        for (int y = 0; y < MIN(window_size.y_blocks + 2, world::map::height - offset.y_blocks); y++)
-            for (int x = 0; x < MIN(window_size.x_blocks + 2, world::map::width - offset.x_blocks); x++) {
-                block_rect.x = BLOCK_HW * x - offset.x % BLOCK_HW;
-                block_rect.y = BLOCK_HW * y - offset.y % BLOCK_HW;
-                _texture = world::map::blocks[x + offset.x_blocks + (y + offset.y_blocks) * world::map::width]->texture;
-                SDL_RenderCopy(renderer, (_texture == nullptr ? no_texture16x16 : _texture), nullptr, &block_rect);
+                case SDL_WINDOWEVENT:
+                    if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                        window_size.set(event.window.data1, event.window.data2);
+                    }
+                    break;
             }
-    }
 
-    void render_entities() {
-        entities::fishes[0].draw(renderer, offset.x, offset.y);
-        /* TODO */
+        entities::fishes[0].tick();
+        render_map();
+        render_entities();
+        SDL_RenderPresent(renderer);
     }
+}
 
-    void load_textures() {
-        /* TODO */
-    }
+void render_map() {
+    SDL_Rect block_rect{0, 0,BLOCK_HW,BLOCK_HW};
+    SDL_Texture *_texture;
+
+    for (int y = 0; y < MIN(window_size.y_blocks + 2, world::map::height - offset.y_blocks); y++)
+        for (int x = 0; x < MIN(window_size.x_blocks + 2, world::map::width - offset.x_blocks); x++) {
+            block_rect.x = BLOCK_HW * x - offset.x % BLOCK_HW;
+            block_rect.y = BLOCK_HW * y - offset.y % BLOCK_HW;
+            _texture = world::map::blocks[x + offset.x_blocks + (y + offset.y_blocks) * world::map::width]->texture;
+            SDL_RenderCopy(renderer, (_texture == nullptr ? no_texture16x16 : _texture), nullptr, &block_rect);
+        }
+}
+
+void render_entities() {
+    entities::fishes[0].draw(renderer, offset.x, offset.y);
+    /* TODO */
+}
+
+void render_point(SDL_Renderer *renderer, int x, int offset_x, int y, int offset_y) {
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    int posRectS = 5;
+    SDL_Rect positionPointRect = {x - offset_x - posRectS / 2, y - offset_y - posRectS / 2, posRectS, posRectS};
+    SDL_RenderFillRect(renderer, &positionPointRect);
+
+    // SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+    SDL_RenderDrawPointF(renderer, x - offset_x, y - offset_y);
+}
+
+void load_textures() {
+    /* TODO */
+}
+
 }
